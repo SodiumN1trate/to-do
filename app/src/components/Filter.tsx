@@ -1,4 +1,3 @@
-
 interface FilterPropsType {
   refetch: (completed?: boolean) => void
 }
@@ -16,7 +15,10 @@ export function Filter(props: FilterPropsType) {
             className="flex w-full cursor-pointer items-center px-3 py-2"
           >
             <div className="inline-flex items-center">
-              <label className="relative flex items-center cursor-pointer" htmlFor="filter-all">
+              <label
+                className="relative flex items-center cursor-pointer"
+                htmlFor="filter-all"
+              >
                 <input
                   name="filter"
                   type="radio"
@@ -25,10 +27,12 @@ export function Filter(props: FilterPropsType) {
                   defaultChecked={true}
                   onChange={() => props.refetch()}
                 />
-                <span
-                  className="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
+                <span className="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
               </label>
-              <label className="ml-2 text-slate-600 cursor-pointer text-sm" htmlFor="filter-all">
+              <label
+                className="ml-2 text-slate-600 cursor-pointer text-sm"
+                htmlFor="filter-all"
+              >
                 All
               </label>
             </div>
@@ -43,7 +47,10 @@ export function Filter(props: FilterPropsType) {
             className="flex w-full cursor-pointer items-center px-3 py-2"
           >
             <div className="inline-flex items-center">
-              <label className="relative flex items-center cursor-pointer" htmlFor="filter-active">
+              <label
+                className="relative flex items-center cursor-pointer"
+                htmlFor="filter-active"
+              >
                 <input
                   name="filter"
                   type="radio"
@@ -51,10 +58,12 @@ export function Filter(props: FilterPropsType) {
                   id="filter-active"
                   onChange={() => props.refetch(false)}
                 />
-                <span
-                  className="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
+                <span className="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
               </label>
-              <label className="ml-2 text-slate-600 cursor-pointer text-sm" htmlFor="filter-active">
+              <label
+                className="ml-2 text-slate-600 cursor-pointer text-sm"
+                htmlFor="filter-active"
+              >
                 Active
               </label>
             </div>
@@ -69,7 +78,10 @@ export function Filter(props: FilterPropsType) {
             className="flex w-full cursor-pointer items-center px-3 py-2"
           >
             <div className="inline-flex items-center">
-              <label className="relative flex items-center cursor-pointer" htmlFor="filter-completed">
+              <label
+                className="relative flex items-center cursor-pointer"
+                htmlFor="filter-completed"
+              >
                 <input
                   name="filter"
                   type="radio"
@@ -77,10 +89,12 @@ export function Filter(props: FilterPropsType) {
                   id="filter-completed"
                   onChange={() => props.refetch(true)}
                 />
-                <span
-                  className="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
+                <span className="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
               </label>
-              <label className="ml-2 text-slate-600 cursor-pointer text-sm" htmlFor="filter-completed">
+              <label
+                className="ml-2 text-slate-600 cursor-pointer text-sm"
+                htmlFor="filter-completed"
+              >
                 Completed
               </label>
             </div>

@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import Form from "@/components/Form";
-import {useEffect, useState} from "react";
-import Toast from "@/components/Toast";
-import {TaskType} from "@/helpers/Types";
-import Task from "@/components/Task";
-import {Filter} from "@/components/Filter";
+import Form from '@/components/Form'
+import { useEffect, useState } from 'react'
+import Toast from '@/components/Toast'
+import { TaskType } from '@/helpers/Types'
+import Task from '@/components/Task'
+import { Filter } from '@/components/Filter'
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskType[]>()
@@ -14,9 +14,13 @@ export default function Home() {
   const [messageId, setMessageId] = useState<number>(0)
 
   const [filter, setFilter] = useState<boolean | undefined>()
-  const getTasks = async ({completed}: {completed?: boolean | undefined} = {}) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks?completed=${completed}`).then(async response => {
-      if(!response.ok) {
+  const getTasks = async ({
+    completed,
+  }: { completed?: boolean | undefined } = {}) => {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/tasks?completed=${completed}`
+    ).then(async (response) => {
+      if (!response.ok) {
         setMessage('Failed to fetch tasks')
         setMessageSuccess(false)
         this.forceUpdate()
@@ -40,13 +44,24 @@ export default function Home() {
 
   return (
     <main className="mx-auto w-75 mt-10 sm:w-xl">
-      <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center">To-do app</h1>
-      <Form setMessage={showMessage} refetch={() => getTasks({completed: filter})} />
-      <Filter refetch={(completed) => getTasks({completed})} />
+      <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center">
+        To-do app
+      </h1>
+      <Form
+        setMessage={showMessage}
+        refetch={() => getTasks({ completed: filter })}
+      />
+      <Filter refetch={(completed) => getTasks({ completed })} />
       <div className="flex flex-col mt-5 gap-5">
-        {tasks?.map((task: TaskType) =>  <Task key={task.id} task={task} refetch={() => getTasks({completed: filter})} />)}
+        {tasks?.map((task: TaskType) => (
+          <Task
+            key={task.id}
+            task={task}
+            refetch={() => getTasks({ completed: filter })}
+          />
+        ))}
       </div>
       <Toast message={message} success={messageSuccess} key={messageId} />
     </main>
-  );
+  )
 }
