@@ -33,9 +33,6 @@ export default function Form(props: FormPropsType) {
         setTitle('')
         setDescription('')
         props.setMessage('Added new task', true)
-        // setMessage('Added new task')
-        // setMessageSuccess(true)
-
         props.refetch()
       }
     })
