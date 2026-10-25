@@ -1,5 +1,5 @@
 # Requirements
-- Node
+- Node 20
 
 # Setup 
 
