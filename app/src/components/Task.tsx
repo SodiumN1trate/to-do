@@ -5,29 +5,58 @@ import { TaskType } from '@/helpers/Types'
 interface TaskCardType {
   task: TaskType
   refetch: () => void
+  setMessage: (message: string, success: boolean) => void
 }
 
 export default function Task(props: TaskCardType) {
   const updateStatus = async (value: boolean) => {
-    props.task.completed = !value
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks/${props.task.id}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(props.task),
-    }).then(async () => {
+    const updatedTask = {
+      ...props.task,
+      completed: value,
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${props.task.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedTask),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Failed to update task')
+      }
+
       props.refetch()
-    })
+    } catch (error) {
+      console.error('Failed to update task:', error)
+      props.setMessage('Failed to update task', false)
+    }
   }
 
   const deleteTask = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks/${props.task.id}`, {
-      method: 'DELETE',
-    }).then(async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${props.task.id}`,
+        {
+          method: 'DELETE',
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete task: ${response.status}`)
+      }
+
       props.refetch()
-    })
+    } catch (error) {
+      console.error('Failed to delete task:', error)
+      props.setMessage('Failed to delete task', false)
+    }
   }
 
   return (

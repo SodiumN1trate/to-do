@@ -10,32 +10,42 @@ export default function Form(props: FormPropsType) {
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const task: TaskType = {
-      title: title,
-      description: description,
+      title,
+      description,
     }
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(task),
-    }).then(async (response) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(task),
+        }
+      )
+
       const responseData = await response.json()
+
       if (!response.ok) {
-        props.setMessage(responseData.message, false)
-      } else {
-        setTitle('')
-        setDescription('')
-        props.setMessage('Added new task', true)
-        props.refetch()
+        props.setMessage(responseData.message || 'Failed to add task', false)
+        return
       }
-    })
+
+      setTitle('')
+      setDescription('')
+      props.setMessage('Added new task', true)
+      props.refetch()
+    } catch (error) {
+      console.error('Failed to add task:', error)
+      props.setMessage('Unable to connect to the server', false)
+    }
   }
 
   return (
@@ -83,7 +93,7 @@ export default function Form(props: FormPropsType) {
               <textarea
                 name="description"
                 id="description"
-                rows="3"
+                rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 resize-none"

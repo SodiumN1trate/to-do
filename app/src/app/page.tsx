@@ -12,24 +12,35 @@ export default function Home() {
   const [message, setMessage] = useState<string | null>('')
   const [messageSuccess, setMessageSuccess] = useState<boolean>(false)
   const [messageId, setMessageId] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const [filter, setFilter] = useState<boolean | undefined>()
   const getTasks = async ({
     completed,
-  }: { completed?: boolean | undefined } = {}) => {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/tasks?completed=${completed}`
-    ).then(async (response) => {
+  }: { completed?: boolean } = {}) => {
+    setLoading(true)
+
+    try {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/tasks${
+        completed === undefined ? '' : `?completed=${completed}`
+      }`
+
+      const response = await fetch(url)
+
       if (!response.ok) {
-        setMessage('Failed to fetch tasks')
-        setMessageSuccess(false)
-        this.forceUpdate()
-      } else {
-        const data = await response.json()
-        setTasks(data.data)
+        throw new Error(`HTTP error: ${response.status}`)
       }
+
+      const data = await response.json()
+
+      setTasks(data.data)
       setFilter(completed)
-    })
+    } catch (error) {
+      console.error('Failed to fetch tasks:', error)
+      showMessage('Failed to fetch tasks', false)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const showMessage = (message: string, status: boolean) => {
@@ -53,13 +64,20 @@ export default function Home() {
       />
       <Filter refetch={(completed) => getTasks({ completed })} />
       <div className="flex flex-col mt-5 gap-5">
-        {tasks?.map((task: TaskType) => (
-          <Task
-            key={task.id}
-            task={task}
-            refetch={() => getTasks({ completed: filter })}
-          />
-        ))}
+        {loading ? (
+          <p>Loading tasks...</p>
+        ) : tasks?.length === 0 ? (
+          <p>No tasks found.</p>
+        ) : (
+          tasks?.map((task: TaskType) => (
+            <Task
+              key={task.id}
+              task={task}
+              refetch={() => getTasks({ completed: filter })}
+              setMessage={showMessage}
+            />
+          ))
+        )}
       </div>
       <Toast message={message} success={messageSuccess} key={messageId} />
     </main>

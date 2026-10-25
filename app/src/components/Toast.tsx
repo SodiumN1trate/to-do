@@ -10,7 +10,7 @@ export default function Toast({
       <div
         className="max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg opacity-0 absolute top-10 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-fadein-fadeout"
         role="alert"
-        tabIndex="-1"
+        tabIndex={-1}
         aria-labelledby="hs-toast-success-example-label"
       >
         <div className="flex p-4">
